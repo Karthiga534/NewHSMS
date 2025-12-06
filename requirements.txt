@@ -2,3 +2,5 @@ google.generativeai
 pymupdf
 gunicorn
 django
+djangorestframework
+django-cors-headers
