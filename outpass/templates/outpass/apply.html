@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Apply for Outpass - HSMS{% endblock %}
+{% block extra_head %}
+<style>
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Outpass Application Form</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason for Leave</label>
+                    <input type="text" class="form-control" id="reason" name="reason" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="from_date" class="form-label">From Date</label>
+                        <input type="date" class="form-control" id="from_date" name="from_date" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="to_date" class="form-label">To Date</label>
+                        <input type="date" class="form-control" id="to_date" name="to_date" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="destination" class="form-label">Destination</label>
+                    <input type="text" class="form-control" id="destination" name="destination" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contact_number" class="form-label">Contact Number</label>
+                    <input type="tel" class="form-control" id="contact_number" name="contact_number" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="parent_consent" name="parent_consent" required>
+                    <label class="form-check-label" for="parent_consent">I confirm that I have my parent's consent</label>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                    <a href="{% url 'outpass_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Register Visitor - HSMS{% endblock %}
+{% block extra_head %}
+<style>
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Visitor Registration</h4>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="visitor_name" class="form-label">Visitor Name</label>
+            <input type="text" class="form-control" id="visitor_name" name="visitor_name" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="relation" class="form-label">Relation</label>
+            <input type="text" class="form-control" id="relation" name="relation" required>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="visit_date" class="form-label">Visit Date</label>
+            <input type="date" class="form-control" id="visit_date" name="visit_date" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="contact_number" class="form-label">Contact Number</label>
+            <input type="tel" class="form-control" id="contact_number" name="contact_number" required>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="purpose" class="form-label">Purpose of Visit</label>
+          <textarea class="form-control" id="purpose" name="purpose" rows="3" required></textarea>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="submit" class="btn btn-primary">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

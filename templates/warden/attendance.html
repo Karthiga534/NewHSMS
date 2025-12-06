@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Warden - Attendance{% endblock %}
+{% block extra_head %}
+<style>
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<h3 class="mb-3">Enter Attendance</h3>
+<form method="post" class="row g-3">
+  {% csrf_token %}
+  <div class="col-md-4">
+    <label class="form-label">Student</label>
+    <select name="student_id" class="form-select" required>
+      <option value="">Select student</option>
+      {% for s in students %}
+      <option value="{{ s.id }}">{{ s.username }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Date</label>
+    <input type="date" name="date" class="form-control" required>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Status</label>
+    <select name="status" class="form-select" required>
+      <option value="Present">Present</option>
+      <option value="Absent">Absent</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Save</button>
+  </div>
+</form>
+{% endblock %}
+
+

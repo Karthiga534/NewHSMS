@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block title %}Warden - Outpass{% endblock %}
+{% block extra_head %}
+<style>
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+  .badge-pending {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  .badge-approved {
+    background-color: #28a745;
+    color: white;
+  }
+  .badge-rejected {
+    background-color: #dc3545;
+    color: white;
+  }
+  .action-buttons {
+    display: flex;
+    gap: 5px;
+  }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Outpass Management</h3>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-outline-primary active" id="pending-btn">Pending</button>
+    <button type="button" class="btn btn-outline-primary" id="approved-btn">Approved</button>
+    <button type="button" class="btn btn-outline-primary" id="rejected-btn">Rejected</button>
+  </div>
+</div>
+
+<!-- Pending Outpasses -->
+<div id="pending-outpasses">
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Pending Outpass Applications</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Reason</th>
+              <th>Destination</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in pending %}
+            <tr>
+              <td>{{ o.student.username }}</td>
+              <td>{{ o.reason }}</td>
+              <td>{{ o.destination }}</td>
+              <td>{{ o.out_date|date:'M d, H:i' }}</td>
+              <td>{{ o.expected_return|date:'M d, H:i' }}</td>
+              <td><span class="badge badge-pending">Pending</span></td>
+              <td>
+                <div class="action-buttons">
+                  <a class="btn btn-sm btn-success" href="{% url 'approve_outpass' o.id %}">Approve</a>
+                  <a class="btn btn-sm btn-danger" href="{% url 'reject_outpass' o.id %}">Reject</a>
+                  <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailsModal{{ o.id }}">Details</button>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Details Modal -->
+            <div class="modal fade" id="detailsModal{{ o.id }}" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Outpass Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Student:</strong> {{ o.student.username }}</p>
+                    <p><strong>Reason:</strong> {{ o.reason }}</p>
+                    <p><strong>Destination:</strong> {{ o.destination }}</p>
+                    <p><strong>From Date:</strong> {{ o.out_date|date:'M d, Y H:i' }}</p>
+                    <p><strong>To Date:</strong> {{ o.expected_return|date:'M d, Y H:i' }}</p>
+                    <p><strong>Emergency Contact:</strong> {{ o.contact_number }}</p>
+                    <p><strong>Parent Consent:</strong> {{ o.parent_consent|yesno:"Yes,No" }}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a class="btn btn-success" href="/warden/outpass/approve/{{ o.id }}/">Approve</a>
+                    <a class="btn btn-danger" href="/warden/outpass/reject/{{ o.id }}/">Reject</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <tr><td colspan="7" class="text-center py-3">No pending outpass applications</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Approved Outpasses (Hidden by default) -->
+<div id="approved-outpasses" style="display: none;">
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Approved Outpass Applications</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Reason</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Approved On</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in approved %}
+            <tr>
+              <td>{{ o.student.username }}</td>
+              <td>{{ o.reason }}</td>
+              <td>{{ o.out_date|date:'M d, H:i' }}</td>
+              <td>{{ o.expected_return|date:'M d, H:i' }}</td>
+              <td>{{ o.approved_at|date:'M d, Y' }}</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>
+                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#approvedModal{{ o.id }}">Details</button>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center py-3">No approved outpass applications</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Rejected Outpasses (Hidden by default) -->
+<div id="rejected-outpasses" style="display: none;">
+  <div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+      <h5 class="mb-0">Rejected Outpass Applications</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Reason</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Rejected On</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in rejected %}
+            <tr>
+              <td>{{ o.student.username }}</td>
+              <td>{{ o.reason }}</td>
+              <td>{{ o.out_date|date:'M d, H:i' }}</td>
+              <td>{{ o.expected_return|date:'M d, H:i' }}</td>
+              <td>{{ o.rejected_at|date:'M d, Y' }}</td>
+              <td><span class="badge badge-rejected">Rejected</span></td>
+              <td>
+                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#rejectedModal{{ o.id }}">Details</button>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center py-3">No rejected outpass applications</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching functionality
+    const pendingBtn = document.getElementById('pending-btn');
+    const approvedBtn = document.getElementById('approved-btn');
+    const rejectedBtn = document.getElementById('rejected-btn');
+    
+    const pendingOutpasses = document.getElementById('pending-outpasses');
+    const approvedOutpasses = document.getElementById('approved-outpasses');
+    const rejectedOutpasses = document.getElementById('rejected-outpasses');
+    
+    pendingBtn.addEventListener('click', function() {
+      pendingOutpasses.style.display = 'block';
+      approvedOutpasses.style.display = 'none';
+      rejectedOutpasses.style.display = 'none';
+      
+      pendingBtn.classList.add('active');
+      approvedBtn.classList.remove('active');
+      rejectedBtn.classList.remove('active');
+    });
+    
+    approvedBtn.addEventListener('click', function() {
+      pendingOutpasses.style.display = 'none';
+      approvedOutpasses.style.display = 'block';
+      rejectedOutpasses.style.display = 'none';
+      
+      pendingBtn.classList.remove('active');
+      approvedBtn.classList.add('active');
+      rejectedBtn.classList.remove('active');
+    });
+    
+    rejectedBtn.addEventListener('click', function() {
+      pendingOutpasses.style.display = 'none';
+      approvedOutpasses.style.display = 'none';
+      rejectedOutpasses.style.display = 'block';
+      
+      pendingBtn.classList.remove('active');
+      approvedBtn.classList.remove('active');
+      rejectedBtn.classList.add('active');
+    });
+  });
+</script>
+{% endblock %}
+
+

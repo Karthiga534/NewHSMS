@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Rooms - HSMS{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Available Rooms</h3>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">Add Room</button>
+  </div>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Room</th>
+        <th>Capacity</th>
+        <th>Occupied</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rooms %}
+      <tr>
+        <td>{{ r.room_no }}</td>
+        <td>{{ r.capacity }}</td>
+        <td>{{ r.occupied_count }}</td>
+        <td>{{ r.status }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No rooms.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+<!-- Add Room Modal -->
+<div class="modal fade" id="addRoomModal" tabindex="-1" aria-labelledby="addRoomLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addRoomLabel">Add Room</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" action="/rooms/add/">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Room Number</label>
+            <input type="text" name="room_no" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Capacity</label>
+            <input type="number" name="capacity" class="form-control" min="1" value="1" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Occupied Count</label>
+            <input type="number" name="occupied_count" class="form-control" min="0" value="0" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

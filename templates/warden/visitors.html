@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Warden - Visitors{% endblock %}
+{% block extra_head %}
+<style>
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<h3 class="mb-3">Visitors</h3>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>Visitor</th>
+            <th>Student</th>
+            <th>Purpose</th>
+            <th>In</th>
+            <th>Out</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in visitors %}
+          <tr>
+            <td>{{ v.visitor_name }}</td>
+            <td>{{ v.student.username }}</td>
+            <td>{{ v.purpose }}</td>
+            <td>{{ v.in_time|date:'M d, H:i' }}</td>
+            <td>{% if v.out_time %}{{ v.out_time|date:'M d, H:i' }}{% else %}-{% endif %}</td>
+            <td class="text-end">
+              {% if not v.out_time %}
+              <a class="btn btn-sm btn-success" href="/warden/visitors/approve/{{ v.id }}/">Mark Exit</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6">No visitors.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Outpass - HSMS{% endblock %}
+{% block content %}
+<h3>Outpass</h3>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Reason</th>
+        <th>Out</th>
+        <th>Expected Return</th>
+        <th>Actual Return</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for o in outpasses %}
+      <tr>
+        <td>{{ o.student.username }}</td>
+        <td>{{ o.reason }}</td>
+        <td>{{ o.out_date|date:'M d, H:i' }}</td>
+        <td>{{ o.expected_return|date:'M d, H:i' }}</td>
+        <td>{% if o.actual_return %}{{ o.actual_return|date:'M d, H:i' }}{% else %}-{% endif %}</td>
+        <td>{{ o.status }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No outpasses.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+{% endblock %}
+

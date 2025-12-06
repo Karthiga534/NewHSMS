@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard - HSMS{% endblock %}
+{% block extra_head %}
+<style>
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+  .dashboard-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+  .card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #007bff;
+  }
+  .card-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .card-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+  .welcome-banner {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="welcome-banner">
+  <h2>Welcome, {{ request.user.username }}!</h2>
+  <p>Access all your hostel services from this dashboard</p>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <a class="text-decoration-none text-dark" href="/outpass/apply/">
+      <div class="card dashboard-card">
+        <div class="card-body text-center p-4">
+          <div class="card-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <h4 class="card-title">Outpass Application</h4>
+          <p class="card-description">Apply for permission to leave the hostel premises</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  
+  <div class="col-md-4">
+    <a class="text-decoration-none text-dark" href="/visitors/apply/">
+      <div class="card dashboard-card">
+        <div class="card-body text-center p-4">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h4 class="card-title">Visitor Application</h4>
+          <p class="card-description">Register visitors who want to meet you at the hostel</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  
+  <div class="col-md-4">
+    <a class="text-decoration-none text-dark" href="/fees/apply/">
+      <div class="card dashboard-card">
+        <div class="card-body text-center p-4">
+          <div class="card-icon">
+            <i class="fas fa-money-bill-wave"></i>
+          </div>
+          <h4 class="card-title">Fees Application</h4>
+          <p class="card-description">Submit your fee application requests</p>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+

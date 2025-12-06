@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - HSMS{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Admin Dashboard</h3>
+  </div>
+
+<div class="row g-3">
+  <div class="col-sm-6 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body"><h6 class="text-muted">Students</h6><div class="h3">{{ stats.students }}</div></div></div>
+  </div>
+  <div class="col-sm-6 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body"><h6 class="text-muted">Rooms</h6><div class="h3">{{ stats.rooms_total }}</div></div></div>
+  </div>
+  <div class="col-sm-6 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body"><h6 class="text-muted">Vacant Rooms</h6><div class="h3">{{ stats.rooms_vacant }}</div></div></div>
+  </div>
+  <div class="col-sm-6 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body"><h6 class="text-muted">Outpass Pending</h6><div class="h3">{{ stats.outpass_pending }}</div></div></div>
+  </div>
+  <div class="col-sm-6 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body"><h6 class="text-muted">Outpass Approved</h6><div class="h3">{{ stats.outpass_approved }}</div></div></div>
+  </div>
+  <div class="col-sm-6 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body"><h6 class="text-muted">Expense (Month)</h6><div class="h3">₹ {{ stats.expense_month }}</div></div></div>
+  </div>
+</div>
+
+<div class="row g-3 mt-3">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between">Recent Outpasses <a href="/outpass/" class="small">View all</a></div>
+      <ul class="list-group list-group-flush">
+        {% for o in recent_outpass %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ o.student.username }} - {{ o.reason }} ({{ o.status }})</span>
+            <small class="text-muted">{{ o.out_date|date:'M d, H:i' }}</small>
+          </li>
+        {% empty %}
+          <li class="list-group-item">No recent outpasses.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between">Recent Expenses <a href="/expenses/" class="small">View all</a></div>
+      <ul class="list-group list-group-flush">
+        {% for e in recent_expenses %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ e.item }} ({{ e.category }})</span>
+            <span>₹ {{ e.amount }}</span>
+          </li>
+        {% empty %}
+          <li class="list-group-item">No recent expenses.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

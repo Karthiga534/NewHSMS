@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Warden Dashboard - HSMS{% endblock %}
+{% block extra_head %}
+<style>
+  /* Expand content to full width when sidebar is hidden */
+  .content { margin-left: 0; }
+  .topbar { position: static; }
+</style>
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-12">
+    <div class="row g-3 mb-1">
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="text-muted">Students</div>
+            <div class="display-6">{{ stats.students }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="text-muted">Rooms (Total)</div>
+            <div class="display-6">{{ stats.rooms_total }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="text-muted">Rooms Vacant</div>
+            <div class="display-6">{{ stats.rooms_vacant }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="text-muted">Outpass Pending</div>
+            <div class="display-6">{{ stats.outpass_pending }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <a class="card text-decoration-none text-dark" href="/warden/students/">
+      <div class="card-body"><h5 class="mb-0">Students</h5></div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a class="card text-decoration-none text-dark" href="/warden/attendance/">
+      <div class="card-body"><h5 class="mb-0">Attendance</h5></div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a class="card text-decoration-none text-dark" href="/warden/outpass/">
+      <div class="card-body"><h5 class="mb-0">Outpass Approvals</h5></div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a class="card text-decoration-none text-dark" href="/warden/visitors/">
+      <div class="card-body"><h5 class="mb-0">Visitors</h5></div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <a class="card text-decoration-none text-dark" href="/warden/expenses/">
+      <div class="card-body"><h5 class="mb-0">Expenses</h5></div>
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+

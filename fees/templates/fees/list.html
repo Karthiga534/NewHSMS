@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Fees - HSMS{% endblock %}
+{% block content %}
+<h3>Fees</h3>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Total</th>
+        <th>Paid</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in fees %}
+      <tr>
+        <td>{{ f.student.username }}</td>
+        <td>₹ {{ f.total_amount }}</td>
+        <td>₹ {{ f.paid_amount }}</td>
+        <td>{{ f.due_date }}</td>
+        <td>{{ f.status }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">No fee records.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+{% endblock %}
+

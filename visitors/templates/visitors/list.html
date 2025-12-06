@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Visitors - HSMS{% endblock %}
+{% block content %}
+<h3>Visitors</h3>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Visitor</th>
+        <th>Student</th>
+        <th>Purpose</th>
+        <th>In</th>
+        <th>Out</th>
+        <th>ID Proof</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in visitors %}
+      <tr>
+        <td>{{ v.visitor_name }}</td>
+        <td>{{ v.student.username }}</td>
+        <td>{{ v.purpose }}</td>
+        <td>{{ v.in_time|date:'M d, H:i' }}</td>
+        <td>{% if v.out_time %}{{ v.out_time|date:'M d, H:i' }}{% else %}-{% endif %}</td>
+        <td>{{ v.id_proof }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No visitors.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+{% endblock %}
+
